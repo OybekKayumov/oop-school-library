@@ -1,9 +1,10 @@
 require_relative './nameable'
-class Person < Nameable
-  attr_reader :id
-  attr_accessor :name, :age
 
-  def initialize(_id, age, name = 'Unknown', parent_permission: true)
+class Person < Nameable
+  attr_accessor :name, :age
+  attr_reader :id
+
+  def initialize(age, name = 'Unknown', parent_permission: true)
     super()
     @id = Random.rand(1..1000)
     @name = name
@@ -38,3 +39,30 @@ class Decorator < Nameable
     @nameable.correct_name
   end
 end
+
+class CapitalizeDecorator < Decorator
+  def correct_name
+    @nameable.correct_name.capitalize
+  end
+end
+
+class TrimmerDecorator < Decorator
+  def correct_name
+    if @nameable.correct_name.length > 10
+      str = []
+      10.times do |i|
+        str.push(@nameable.correct_name.chars[i])
+      end
+      str.join
+    else
+      @nameable.correct_name
+    end
+  end
+end
+
+person = Person.new(22, 'maximilianus')
+person.correct_name
+capitalized_person = CapitalizeDecorator.new(person)
+capitalized_person.correct_name
+capitalized_trimmed_person = TrimmerDecorator.new(capitalized_person)
+capitalized_trimmed_person.correct_name
