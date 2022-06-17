@@ -6,7 +6,6 @@ class Book
     @title = title
     @author = author
     @rentals = []
-
   end
 
   def add_rental(rental)
